@@ -192,17 +192,20 @@
                 })
                 .catch(error => console.log('error', error));
 
-            function displayTracks(tracks) {
-                var recentlyPlayedDiv = document.getElementById("recentlyPlayedTracks");
-                var trackList = document.createElement("ul");
+function displayTracks(tracks) {
+    var recentlyPlayedDiv = document.getElementById("recentlyPlayedTracks");
+    var trackList = document.createElement("ul");
 
-                tracks.items.forEach(function(track) { // Assuming the array of tracks is under 'items' key
-                    var trackItem = document.createElement("li");
-                    trackItem.textContent = track.track.name + " - " + track.track.artist; // Assuming track name and artist are nested under 'track' key
-                    trackList.appendChild(trackItem);
-                });
+    tracks.items.forEach(function(item) {
+        var track = item.track;
+        var trackItem = document.createElement("li");
+        trackItem.textContent = track.name + " - " + track.artists[0].name;
+        trackList.appendChild(trackItem);
+    });
 
-                recentlyPlayedDiv.appendChild(trackList);
+    recentlyPlayedDiv.appendChild(trackList);
+}
+
             }
         });
     </script>
