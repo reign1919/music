@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recently Played Tracks</title>
+    <link rel="icon" href= 
+    "https://img.icons8.com/nolan/64/king.png" 
+            type="image/x-icon">
+    <style>
+      /* Reset styles */
+      body, h1, ul, li, p {
+          margin: 0;
+          padding: 0;
+      }
+
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #000;
+          color: #fff; /* Text color white */
+      }
+
+      .container {
+          max-width: 800px;
+          margin: 20px auto;
+          padding: 20px;
+          background-color: #000; /* Black background color */
+          border-radius: 10px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 32px;
+      }
+
+      #recentlyPlayedTracks ul {
+          list-style-type: none;
+      }
+
+      #recentlyPlayedTracks ul li {
+          padding: 10px;
+          background-color: #333; /* Dark gray background color */
+          border-radius: 5px;
+          margin-bottom: 10px;
+          border: 1px solid #000;
+          transition: background-color 0.3s ease; /* Smooth transition */
+      }
+
+      #recentlyPlayedTracks ul li:hover {
+          background-color: #555; /* Dark gray hover color */
+          transform: scale(1.02); /* Scale up on hover */
+      }
+
+      .track-list-item img {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          margin-right: 15px;
+      }
+
+      #DEV-REIGN {
+          position: fixed;
+          bottom: 20px;
+          left: 20px;
+          background-color: rgba(255, 255, 255, 0.8);
+          padding: 10px;
+          border-radius: 5px;
+          display: flex;
+          align-items: center;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      #DEV-REIGN p {
+          margin-right: 10px;
+          font-weight: bold;
+          font-size: 16px;
+          color: #333;
+      }
+
+      #DEV-REIGN .logo img,
+      #DEV-REIGN .image img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin-right: 10px;
+          opacity: 0.8;
+          transition: opacity 0.3s ease;
+      }
+
+      #DEV-REIGN .logo img:hover,
+      #DEV-REIGN .image img:hover {
+          opacity: 1;
+      }
+
+      footer {
+          text-align: center;
+          background-color: #333;
+          color: #fff;
+          padding: 20px 0;
+          position: fixed;
+          width: 100%;
+          bottom: 0;
+          left: 0;
+      }
+
+      @media (max-width: 768px) {
+          .container {
+              padding: 15px;
+          }
+
+          #recentlyPlayedTracks ul li {
+              font-size: 14px;
+          }
+
+          .track-list-item img {
+              width: 40px;
+              height: 40px;
+          }
+
+          #DEV-REIGN p {
+              font-size: 14px;
+          }
+
+          #DEV-REIGN .logo img,
+          #DEV-REIGN .image img {
+              width: 30px;
+              height: 30px;
+          }
+      }
+      #liveButton {
+    position: fixed;
+    top: 20px; /* Adjust as needed */
+    right: 20px; /* Adjust as needed */
+    z-index: 9999; /* Ensure it stays on top of other elements */
+    width: 100px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.view-playlist-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* Adjusted to the right */
+    padding: 10px 20px;
+    background-color: #007bff; /* Blue background color */
+    color: #fff; /* Text color white */
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+}
+
+.view-playlist-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+
+
+    </style>
+</head>
+<body>
+    <a href="playlist.html" class="view-playlist-button">VIEW FAVORITE PLAYLIST</a>
+    <img src="https://www.olympic.org.cy/images/2021/05/24/live-button.gif" alt="Live button" id="liveButton">
+    <h1>Recently Played Tracks</h1>
+    <div id="recentlyPlayedTracks">
+        <!-- Tracks will be displayed here -->
+    </div>
+    <div id="DEV-REIGN">
+      <p>DEV-REIGN</p>
+        <div class="logo">
+            <img src="https://img.icons8.com/nolan/64/king.png" alt="King logo">
+        </div>
+        <div class="image">
+            <img src="https://cdn.freebiesupply.com/logos/large/2x/spotify-2-logo-png-transparent.png" alt="Spotify logo">
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            var requestOptions = {
+                method: "get",
+                headers: myHeaders,
+                redirect: "follow",
+            };
+
+            fetch("https://v1.nocodeapi.com/reign/spotify/RJpvXXGUPrkhjPDI/recentlyPlayed", requestOptions)
+                .then(response => response.json()) // Parse response as JSON
+                .then(result => {
+                    displayTracks(result); // Call function to display tracks
+                })
+                .catch(error => console.log('error', error));
+
+            function displayTracks(tracks) {
+                var recentlyPlayedDiv = document.getElementById("recentlyPlayedTracks");
+                var trackList = document.createElement("ul");
+
+                tracks.items.forEach(function(track) { // Assuming the array of tracks is under 'items' key
+                    var trackItem = document.createElement("li");
+                    trackItem.textContent = track.track.name + " - " + track.track.artist; // Assuming track name and artist are nested under 'track' key
+                    trackList.appendChild(trackItem);
+                });
+
+                recentlyPlayedDiv.appendChild(trackList);
+            }
+        });
+    </script>
+
+
+</body>
+</html>
+
+
