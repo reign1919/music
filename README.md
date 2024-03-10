@@ -1,4 +1,4 @@
-# REIGN Project
+# A REIGN Project
 
 This project consists of two HTML files: `index.html` and `playlist.html`, along with two CSS file named `playlistembed.css` & `style.css`. It showcases recently played tracks and a favorite playlist.
 
@@ -37,5 +37,6 @@ This project was created by DEV-REIGN.
 - Spotify API: Data for recently played tracks and playlist embedding is fetched from the Spotify API.
 - Icons: Icons used in the project are sourced from [icons8](https://icons8.com/) and [Freebie Supply](https://freebiesupply.com/).
 
-**IMPORTANT NOTE**:
-THE JAVASCRIPT HAS BEEN WRITTEN WITHIN THE `.html` FILES.
+### **IMPORTANT NOTE**:
+i) THE JAVASCRIPT HAS BEEN WRITTEN WITHIN THE `.html` FILES.
+ii) IF THE CONTENT DOESEN'T LOAD ON THE MAIN PAGE (RECENTLY PLAYED TRACKS), THEN TRY *RELOADING* THE TAB A FEW TIMES
